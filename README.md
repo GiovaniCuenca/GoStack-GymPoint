@@ -44,6 +44,8 @@ Desenvolver uma aplicação para gerenciamento de uma academia contendo: </br>
   $ docker run --name postgresgympoint -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres:11  </br>
   $ docker run --name redisgympoint -p 6379:6379 -d -t redis:alpine </br>
   
+  **ps: Eu fiz no Docker Tool, portanto, é necessário alterar o hostname para localhost dentro da pasta: src/config/database.js no backend
+  
  - Utilizando o aplicativo PostBird ou alguma outra ferramente similar crie uma database com o nome de <b>gympoint</b> 
  
  - Dentro da pasta <b>backend</b> realize os seguintes comandos:
