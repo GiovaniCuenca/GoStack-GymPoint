@@ -12,23 +12,23 @@ import {StorageService} from '../../../../services/storage.service';
 
 const Home = () => {
   const [student, setStudent] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function loadStudent() {
-    try {
-      const _studentID = await StorageService.get('gympointStudentId');
+    const _studentID = await StorageService.get('gympointStudentId');
 
+    try {
       const response = await api.get(`/students/${_studentID}`);
 
       setStudent(response.data);
-      setIsLoading(false);
     } catch (error) {
-      Actions.replace('login');
+      Actions.replace('core');
     }
+
+    setIsLoading(false);
   }
 
   useEffect(() => {
-    setIsLoading(true);
     loadStudent();
   }, []);
 

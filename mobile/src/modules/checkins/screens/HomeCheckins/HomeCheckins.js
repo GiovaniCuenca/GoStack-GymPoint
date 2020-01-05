@@ -23,19 +23,38 @@ const HomeCheckins = () => {
   const [checkIns, setCheckIns] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [page, setPage] = useState();
+  const [page, setPage] = useState(1);
+  const [studentId, setStudentId] = useState('');
 
   async function loadCheckins(selectedPage = 1) {
     const _studentId = await StorageService.get('gympointStudentId');
-    const response = await api.get(`/students/${_studentId}/checkins`, {
-      params: {page: selectedPage},
-    });
 
-    setCheckIns(
-      selectedPage > 1
-        ? [
-            ...checkIns,
-            ...response.data.map(checkin => {
+    setStudentId(_studentId);
+
+    try {
+      const response = await api.get(`/students/${_studentId}/checkins`, {
+        params: {page: selectedPage},
+      });
+
+      setCheckIns(
+        selectedPage > 1
+          ? [
+              ...checkIns,
+              ...response.data.map(checkin => {
+                return {
+                  ...checkin,
+                  formattedDate: formatRelative(
+                    parseISO(checkin.created_at),
+                    new Date(),
+                    {
+                      locale: ptBR,
+                      addSuffix: true,
+                    },
+                  ),
+                };
+              }),
+            ]
+          : response.data.map(checkin => {
               return {
                 ...checkin,
                 formattedDate: formatRelative(
@@ -48,22 +67,10 @@ const HomeCheckins = () => {
                 ),
               };
             }),
-          ]
-        : response.data.map(checkin => {
-            return {
-              ...checkin,
-              formattedDate: formatRelative(
-                parseISO(checkin.created_at),
-                new Date(),
-                {
-                  locale: ptBR,
-                  addSuffix: true,
-                },
-              ),
-            };
-          }),
-    );
-    setPage(selectedPage);
+      );
+      setPage(selectedPage);
+    } catch (error) {}
+
     setIsLoading(false);
   }
 
@@ -75,7 +82,7 @@ const HomeCheckins = () => {
   async function newCheckIn() {
     setIsLoading(true);
     try {
-      await api.post(`/students/39/checkins`);
+      await api.post(`/students/${studentId}/checkins`);
     } catch (err) {
       Alert.alert('Aviso', 'Número de Check-Ins atingidos no máximo período');
     }

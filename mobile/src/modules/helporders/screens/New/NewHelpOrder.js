@@ -39,6 +39,7 @@ const NewHelpOrder = ({studentId}) => {
       Alert.alert('Sucesso!', 'Pergunta enviada com sucesso!');
 
       Actions.pop();
+      Actions.refresh({key: Math.random});
     } catch (error) {
       Alert.alert('Erro', 'Favor tentar novamente');
     }

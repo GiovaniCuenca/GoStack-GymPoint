@@ -29,15 +29,32 @@ const HomeHelpOrder = () => {
 
   async function loadHelpOrders(selectedPage = 1) {
     const _studentId = await StorageService.get('gympointStudentId');
-    const response = await api.get(`/students/${_studentId}/help-orders`, {
-      params: {page: selectedPage},
-    });
 
-    setHelpOrders(
-      selectedPage > 1
-        ? [
-            ...helpOrders,
-            ...response.data.map(helporder => {
+    try {
+      const response = await api.get(`/students/${_studentId}/help-orders`, {
+        params: {page: selectedPage},
+      });
+
+      setHelpOrders(
+        selectedPage > 1
+          ? [
+              ...helpOrders,
+              ...response.data.map(helporder => {
+                return {
+                  ...helporder,
+                  answered: helporder.answer === null ? false : true,
+                  formattedDate: formatRelative(
+                    parseISO(helporder.createdAt),
+                    new Date(),
+                    {
+                      locale: ptBR,
+                      addSuffix: true,
+                    },
+                  ),
+                };
+              }),
+            ]
+          : response.data.map(helporder => {
               return {
                 ...helporder,
                 answered: helporder.answer === null ? false : true,
@@ -51,23 +68,9 @@ const HomeHelpOrder = () => {
                 ),
               };
             }),
-          ]
-        : response.data.map(helporder => {
-            return {
-              ...helporder,
-              answered: helporder.answer === null ? false : true,
-              formattedDate: formatRelative(
-                parseISO(helporder.createdAt),
-                new Date(),
-                {
-                  locale: ptBR,
-                  addSuffix: true,
-                },
-              ),
-            };
-          }),
-    );
-    setPage(selectedPage);
+      );
+      setPage(selectedPage);
+    } catch (error) {}
     setStudentId(_studentId);
     setIsLoading(false);
   }
@@ -106,7 +109,7 @@ const HomeHelpOrder = () => {
               <FlatList
                 style={{marginVertical: 20, paddingRight: 10}}
                 data={helpOrders}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.id.toString()}
                 renderItem={({item}) => (
                   <ListHelpOrder
                     id={item.id}
