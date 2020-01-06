@@ -50,12 +50,12 @@ Desenvolver uma aplicação para gerenciamento de uma academia contendo: </br>
   `$ yarn`
 
 - Com o docker instalado rode os seguintes comandos para criar os databases; </br>
-  `$ docker run --name postgresgympoint -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres:11`
-  `$ docker run --name redisgympoint -p 6379:6379 -d -t redis:alpine`
+  `$ docker run --name postgresgympoint -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres:11` </br>
+  `$ docker run --name redisgympoint -p 6379:6379 -d -t redis:alpine` </br>
 
-\*\*OBS: Como utilizei o Docker Tool do Windows, é necessário alterar o hostname de dois arquivos dentro do backend:
-`src/config/database.js - no hostname alterar para: localhost`
-`src/config/redis.js - no hostname alterar para: localhost`
+**OBS:** Como utilizei o Docker Tool do Windows, é necessário alterar o hostname de dois arquivos dentro do backend:
+`src/config/database.js - no hostname alterar para: localhost` </br>
+`src/config/redis.js - no hostname alterar para: localhost` </br>
 
 - Utilizando o aplicativo \*\*PostBird ou alguma outra ferramente similar crie uma database com o nome de <b>gympoint</b>
 
@@ -82,7 +82,7 @@ Desenvolver uma aplicação para gerenciamento de uma academia contendo: </br>
 
 ## Emular no celular
 
-**PS: Testado apenas no **Android pois não tenho acesso a um Mac.
+**PS**: Testado apenas no **Android** pois não tenho acesso a um Mac.
 
 Para conectar-se ao backend, ir no aquivo `mobile/src/services/api.js` e alterar o link da baseURL dependendo do emulador.
 
@@ -117,8 +117,8 @@ from: 'Equipe Gympoint <noreply@gympoint.com>',
 ## Web
 
 Faça o login como administrador</br>
-**email: admin@gympoint.com </br>
-**senha: 123456
+**email:** admin@gympoint.com </br>
+**senha:** 123456
 
 ## Mobile
 
